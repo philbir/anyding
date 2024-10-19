@@ -1,0 +1,25 @@
+<Project>
+  <Import Project="Lab.props" Condition="Exists('Lab.props')" />
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Anyding</RootNamespace>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Product>Anyding</Product>
+    <Authors>Philippe Birbaum</Authors>
+    <RepositoryUrl>https://github.com/philbir/anyding</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+
+
+</Project>

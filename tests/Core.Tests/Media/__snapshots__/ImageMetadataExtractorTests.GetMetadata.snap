@@ -1,0 +1,21 @@
+﻿{
+  "ImageId": null,
+  "Dimension": {
+    "Height": 4284,
+    "Width": 5712
+  },
+  "GeoLocation": {
+    "Latitude": 47.034722,
+    "Longitude": 9.006111,
+    "Altitude": 848,
+    "Source": null
+  },
+  "Orientation": "Horizontal (normal)",
+  "Camera": {
+    "Model": "iPhone 15 Pro Max",
+    "Make": "Apple",
+    "Software": "18.1"
+  },
+  "DateTaken": "2024-09-06T09:14:09",
+  "Lens": "iPhone 15 Pro Max back triple camera 6.765mm f/1.78"
+}

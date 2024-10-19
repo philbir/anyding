@@ -1,0 +1,73 @@
+http://localhost:8108/collections/media/documents/search?q=Persons in the forrest&query_by=embedding&page=1&per_page=100&exclude_fields=embedding&sort_by=_vector_distance:desc
+x-typesense-api-key:key
+
+HTTP/1.1 200  - OK
+connection: close
+access-control-allow-origin: *
+content-type: application/json; charset=utf-8
+content-encoding: gzip
+vary: accept-encoding
+accept-ranges: none
+transfer-encoding: chunked
+###
+POST http://localhost:8108/multi_search
+x-typesense-api-key:key
+
+{
+  "searches": [
+    {
+      "collection": "media",
+      "q": "*",
+      "filter_by":"$face(id:=fa2e1b8c4ed94894ae52436a9f4f6a4f)",
+      "page": 1,
+      "per_page": 100,
+      "exclude_fields": "embedding,$face(encoding)",
+      "include_fields": "$face(name)"
+    }
+  ]
+}
+
+HTTP/1.1 200  - OK
+connection: close
+access-control-allow-origin: *
+content-type: application/json; charset=utf-8
+content-encoding: gzip
+vary: accept-encoding
+accept-ranges: none
+transfer-encoding: chunked
+###
+POST http://localhost:8108/multi_search
+x-typesense-api-key:key
+
+{
+  "searches": [
+    {
+      "collection": "media",
+      "q": "*",
+      "filter_by":"faces.person_name:Yael && faces.person_name:Jana",
+      "page": 1,
+      "per_page": 100,
+      "exclude_fields": "embedding,$face(encoding)"
+    }
+  ]
+}
+###
+POST http://localhost:8108/multi_search
+x-typesense-api-key:key
+
+{
+  "searches": [
+    {
+      "collection": "face",
+      "q": "jana",
+      "query_by": "$person(name)",
+      "page": 1,
+      "per_page": 100,
+      "exclude_fields": "encoding",
+      "include_fields": "$person(*)"
+    }
+  ]
+}
+###
+http://localhost:8108/collections/media/documents/search?q=*&filter_by=dimension.height:>100&page=1&per_page=10&exclude_fields=embedding&facet_by=date_taken.year_month
+x-typesense-api-key:key

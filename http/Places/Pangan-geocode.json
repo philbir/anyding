@@ -1,0 +1,43 @@
+{
+	"type": "FeatureCollection",
+	"geocoding": {
+		"version": "0.1.0",
+		"attribution": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+		"licence": "ODbL",
+		"query": ""
+	},
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"geocoding": {
+					"place_id": 251693558,
+					"osm_type": "way",
+					"osm_id": 480771230,
+					"osm_key": "tourism",
+					"osm_value": "hotel",
+					"type": "house",
+					"accuracy": 0,
+					"label": "Silver Beach Bungalow, สฎ.3073, Baan Sri Thanu, Phet Pha-ngan, Surat Thani Province, 84820, Thailand",
+					"name": "Silver Beach Bungalow",
+					"postcode": "84820",
+					"street": "สฎ.3073",
+					"city": "Baan Sri Thanu",
+					"state": "Surat Thani Province",
+					"country": "Thailand",
+					"country_code": "th",
+					"admin": {
+						"level4": "Surat Thani Province"
+					}
+				}
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					99.96750112639445,
+					9.7756641
+				]
+			}
+		}
+	]
+}

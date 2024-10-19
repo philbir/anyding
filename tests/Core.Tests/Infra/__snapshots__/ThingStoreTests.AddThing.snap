@@ -1,0 +1,114 @@
+﻿{
+  "Id": "19964922-03e6-40e8-a30d-823ae32b27f4",
+  "Name": "Foobar.jpg",
+  "Description": null,
+  "Detail": null,
+  "Type": {
+    "Id": "ee3e0ce3-8f6e-4191-9198-5621ce5c5388",
+    "Name": "Media",
+    "ValidClasses": [
+      {
+        "Id": "a4828c9d-cf1e-4b53-90cd-89431359988a",
+        "TypeId": "ee3e0ce3-8f6e-4191-9198-5621ce5c5388",
+        "Name": "Image"
+      }
+    ]
+  },
+  "Class": {
+    "Id": "a4828c9d-cf1e-4b53-90cd-89431359988a",
+    "TypeId": "ee3e0ce3-8f6e-4191-9198-5621ce5c5388",
+    "Name": "Image"
+  },
+  "Source": {
+    "SourceId": "Foobar.jpg",
+    "ConnectorId": "4a9df463-0b40-41c1-a74a-35c2b7313145",
+    "FullLocation": "user/foo/FooBar.jpg"
+  },
+  "Status": "Draft",
+  "Created": "2024-04-20T18:57:25.968019+09:00",
+  "Tags": [
+    {
+      "Id": "bd87622e-2791-444b-aecd-a78c35a4ac4a",
+      "ThingId": "19964922-03e6-40e8-a30d-823ae32b27f4",
+      "Definition": {
+        "Id": "04900209-b9a1-4453-8fcc-dc7bf37c12c0",
+        "Name": "Tag1",
+        "Color": "#32a2a8",
+        "Icon": "mdi-house"
+      },
+      "DefinitionId": "04900209-b9a1-4453-8fcc-dc7bf37c12c0",
+      "Value": "Test Tag"
+    }
+  ],
+  "Connections": [
+    {
+      "Id": "cd146700-1448-4f95-b759-9a8442e9cf86",
+      "Type": "PlaceTaken",
+      "To": {
+        "Id": "fbcab6ff-cacb-4cf5-8331-f5a1a714fe25",
+        "Name": "Quaibrücke, Zurich, Switzerland",
+        "Description": null,
+        "Detail": "{\"Latitude\":47.366667,\"Longitude\":8.543056,\"Altitude\":460,\"Name\":\"Quaibr\\u00FCcke\",\"City\":\"Test City\",\"Address\":\"Quaibr\\u00FCcke\",\"Region\":\"Zurich\",\"Locality\":\"Zurich\",\"LocalAdmin\":\"Zurich\",\"CountryCode\":\"CH\",\"Continent\":\"Europe\",\"Label\":\"Quaibr\\u00FCcke, Zurich, Switzerland\"}",
+        "Type": {
+          "Id": "bae242c1-0459-4da3-988d-ebb8a13ec205",
+          "Name": "Place",
+          "ValidClasses": []
+        },
+        "Class": null,
+        "Source": null,
+        "Status": "Draft",
+        "Created": "2024-04-20T18:57:25.967972+09:00",
+        "Tags": [],
+        "Connections": []
+      },
+      "FromId": "19964922-03e6-40e8-a30d-823ae32b27f4",
+      "ToId": "fbcab6ff-cacb-4cf5-8331-f5a1a714fe25"
+    },
+    {
+      "Id": "a3b75a19-9591-48f7-8fe9-d391bd3098bb",
+      "Type": "TakenBy",
+      "To": {
+        "Id": "3c08e2e0-3929-4784-86de-c3a70951bdb4",
+        "Name": "iPhone 15 Pro Max",
+        "Description": null,
+        "Detail": null,
+        "Type": {
+          "Id": "602ecd7a-b98a-4c05-9c01-0215e85c09c7",
+          "Name": "Device",
+          "ValidClasses": []
+        },
+        "Class": null,
+        "Source": null,
+        "Status": "Draft",
+        "Created": "2024-04-20T18:57:25.970775+09:00",
+        "Tags": [],
+        "Connections": []
+      },
+      "FromId": "19964922-03e6-40e8-a30d-823ae32b27f4",
+      "ToId": "3c08e2e0-3929-4784-86de-c3a70951bdb4"
+    },
+    {
+      "Id": "0d72f5bc-6945-4a7c-9514-5a049e7d1fb0",
+      "Type": "InMedia",
+      "To": {
+        "Id": "2e1f7784-2680-43d1-a933-1fd0c9824bc9",
+        "Name": "Bart Simpson",
+        "Description": null,
+        "Detail": null,
+        "Type": {
+          "Id": "060e0e54-6ce1-4450-9196-2bdfcd9b69e7",
+          "Name": "Person",
+          "ValidClasses": []
+        },
+        "Class": null,
+        "Source": null,
+        "Status": "Draft",
+        "Created": "2024-04-20T18:57:25.970779+09:00",
+        "Tags": [],
+        "Connections": []
+      },
+      "FromId": "19964922-03e6-40e8-a30d-823ae32b27f4",
+      "ToId": "2e1f7784-2680-43d1-a933-1fd0c9824bc9"
+    }
+  ]
+}

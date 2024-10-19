@@ -1,0 +1,49 @@
+{
+	"type": "FeatureCollection",
+	"geocoding": {
+		"version": "0.1.0",
+		"attribution": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+		"licence": "ODbL",
+		"query": ""
+	},
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"geocoding": {
+					"place_id": 59588643,
+					"osm_type": "way",
+					"osm_id": 33556413,
+					"osm_key": "highway",
+					"osm_value": "primary",
+					"type": "street",
+					"accuracy": 0,
+					"label": "Utoquai, Hochschulen, Altstadt, Zurich, District Zurich, Zurich, 8024, Switzerland",
+					"name": "Utoquai",
+					"postcode": "8024",
+					"locality": "Hochschulen",
+					"district": "Altstadt",
+					"city": "Zurich",
+					"county": "District Zurich",
+					"state": "Zurich",
+					"country": "Switzerland",
+					"country_code": "ch",
+					"admin": {
+						"level10": "Hochschulen",
+						"level9": "Altstadt",
+						"level8": "Zurich",
+						"level6": "District Zurich",
+						"level4": "Zurich"
+					}
+				}
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					8.544405603406183,
+					47.36689528790336
+				]
+			}
+		}
+	]
+}

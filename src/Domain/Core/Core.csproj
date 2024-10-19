@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>Anyding.Core</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Magick.NET-Q16-AnyCPU" />
+        <PackageReference Include="MetadataExtractor" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Options"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
+        <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations"/>
+        <PackageReference Include="Microsoft.Extensions.Http" />
+        <PackageReference Include="NodaTime" />
+        <PackageReference Include="Polly" />
+        <PackageReference Include="SixLabors.ImageSharp" />
+        <PackageReference Include="Xabe.FFmpeg" />
+        <PackageReference Include="Xabe.FFmpeg.Downloader" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\TypeSense.Context\TypeSense.Context.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Storage\Postgres\Migrations\" />
+    </ItemGroup>
+
+
+</Project>

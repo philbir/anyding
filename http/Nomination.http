@@ -1,0 +1,51 @@
+/*
+## OpenStreetMap Nominatim API
+
+**API**:
+https://nominatim.org/release-docs/latest/api/Overview/
+
+**UI**:
+https://nominatim.openstreetmap.org/ui/
+*/
+# Initialize veriables
+@url = https://nominatim.openstreetmap.org/
+@language = "en"
+
+###
+
+@lat = 47.36689528790336
+@lon = 8.544405603406183
+@zoom = 18
+
+{{url}}reverse?format=geocodejson&lat={{lat}}&lon={{lon}}&zoom={{zoom}}&addressdetails=1&namedetails=1
+Accept-Language: {{language}}
+
+HTTP/1.1 200  - OK
+server: nginx
+date: Sat, 28 Sep 2024 15:13:39 GMT
+content-type: application/json; charset=utf-8
+content-length: 882
+connection: keep-alive
+keep-alive: timeout=20
+###
+@id=11111393255
+@type=N
+
+{{url}}details?osmtype={{type}}&osmid={{id}}&format=json&hierarchy=1
+User-Agent: anyding/1.0
+Accept-Language: {{language}}
+
+
+HTTP/1.1 200  - OK
+server: nginx
+date: Sat, 28 Sep 2024 15:12:24 GMT
+content-type: application/json; charset=utf-8
+content-length: 683
+connection: keep-alive
+keep-alive: timeout=20
+###
+@ids=N9676899777
+
+{{url}}lookup?osm_ids={{ids}}&format=geocodejson&hierarchy=1&addressdetails=1
+User-Agent: anyding/1.0
+Accept-Language: {{language}}

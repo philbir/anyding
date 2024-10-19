@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres
+    container_name: pg_Anyding
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+
+  typesense:
+    container_name: typesense
+    image: typesense/typesense:27.1
+    restart: always
+    ports:
+      - "8108:8108"
+    volumes:
+      - ts_data:/data
+    command: '--data-dir /data --api-key=key --enable-cors'
+
+  typesense-ui:
+    image: ghcr.io/bfritscher/typesense-dashboard:latest
+    restart: always
+    volumes:
+      - ./dash-config.json:/srv/config.json
+    ports:
+      - "8109:80"
+
+volumes:
+  local_pgdata:
+  ts_data:

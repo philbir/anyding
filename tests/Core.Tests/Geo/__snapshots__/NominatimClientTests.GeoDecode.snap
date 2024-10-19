@@ -1,0 +1,36 @@
+﻿{
+  "Found": true,
+  "Source": "OSM_Nominatim",
+  "GeoCoding": {
+    "Type": "street",
+    "Name": null,
+    "Label": "Schwändi, Romoos, Lucerne, 6113, Switzerland",
+    "HouseNumber": null,
+    "PostCode": "6113",
+    "Street": null,
+    "Locality": null,
+    "District": "Schwändi",
+    "City": "Romoos",
+    "County": null,
+    "State": "Lucerne",
+    "Country": "Switzerland",
+    "CountryCode": "ch",
+    "OpenStreetMap": {
+      "Version": "0.1.0",
+      "Type": "way",
+      "Id": 140244347,
+      "PlaceId": 60708404,
+      "OsmKey": "highway",
+      "OsmValue": "unclassified",
+      "Accuracy": 0
+    },
+    "Geometry": {
+      "Type": "Point",
+      "Coordinates": [
+        8.0028072,
+        47.0010528
+      ]
+    }
+  },
+  "Raw": "{\"type\":\"FeatureCollection\",\"geocoding\":{\"version\":\"0.1.0\",\"attribution\":\"Data \\u00A9 OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright\",\"licence\":\"ODbL\",\"query\":\"\"},\"features\":[{\"type\":\"Feature\",\"properties\":{\"geocoding\":{\"place_id\":60708404,\"osm_type\":\"way\",\"osm_id\":140244347,\"osm_key\":\"highway\",\"osm_value\":\"unclassified\",\"type\":\"street\",\"accuracy\":0,\"label\":\"Schw\\u00E4ndi, Romoos, Lucerne, 6113, Switzerland\",\"name\":null,\"housenumber\":null,\"postcode\":\"6113\",\"street\":null,\"locality\":null,\"district\":\"Schw\\u00E4ndi\",\"city\":\"Romoos\",\"county\":null,\"state\":\"Lucerne\",\"country\":\"Switzerland\",\"country_code\":\"ch\",\"admin\":{\"level8\":\"Romoos\",\"level6\":null,\"level4\":\"Lucerne\"}}},\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.0028072,47.0010528]}}]}"
+}
