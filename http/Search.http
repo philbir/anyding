@@ -1,14 +1,16 @@
-http://localhost:8108/collections/media/documents/search?q=Persons in the forrest&query_by=embedding&page=1&per_page=100&exclude_fields=embedding&sort_by=_vector_distance:desc
+GET http://localhost:8108/collections/media/documents/search
+    ?q=Cats on the a plane
+    &query_by=embedding
+    &page=1&per_page=100
+    &exclude_fields=embedding,tags
+    &filter_by= city:thailwil,location:(10.087778,99.826111, 2 km)
+    &facet_by=city,country,faces.person_name
+    &sort_by=location(10.087778,99.826111):asc,date_taken.timestamp:desc
+x-typesense-api-key:key
+###
+GET http://localhost:8108/collections/media/documents/8082b75246a34d18bb0a2f0108eed951
 x-typesense-api-key:key
 
-HTTP/1.1 200  - OK
-connection: close
-access-control-allow-origin: *
-content-type: application/json; charset=utf-8
-content-encoding: gzip
-vary: accept-encoding
-accept-ranges: none
-transfer-encoding: chunked
 ###
 POST http://localhost:8108/multi_search
 x-typesense-api-key:key
@@ -17,8 +19,8 @@ x-typesense-api-key:key
   "searches": [
     {
       "collection": "media",
-      "q": "*",
-      "filter_by":"$face(id:=fa2e1b8c4ed94894ae52436a9f4f6a4f)",
+      "q": "Jana",
+      "query_by": "faces.person_name",
       "page": 1,
       "per_page": 100,
       "exclude_fields": "embedding,$face(encoding)",
@@ -26,15 +28,6 @@ x-typesense-api-key:key
     }
   ]
 }
-
-HTTP/1.1 200  - OK
-connection: close
-access-control-allow-origin: *
-content-type: application/json; charset=utf-8
-content-encoding: gzip
-vary: accept-encoding
-accept-ranges: none
-transfer-encoding: chunked
 ###
 POST http://localhost:8108/multi_search
 x-typesense-api-key:key
