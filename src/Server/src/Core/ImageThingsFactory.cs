@@ -8,7 +8,6 @@ public class CreateThingsRequest
     public List<ThingConnection> Connections { get; set; } = new List<ThingConnection>();
 }
 
-
 public class CreateThingInput
 {
     public Guid Id { get; set; }
@@ -32,7 +31,6 @@ public class ThingInputData
     public string Id { get; set; }
     public string Name { get; set; }
     public string ContentType { get; set; }
-
     public Func<Stream> LoadData { get; set; }
     public string Type { get; set; }
 }

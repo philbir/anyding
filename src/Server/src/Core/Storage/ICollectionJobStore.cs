@@ -1,14 +1,9 @@
-using Anyding.Discovery;
+using Anyding.Connectors;
 using Anyding.Geo;
 
 namespace Anyding.Data;
 
-public interface ICollectionJobStore
-{
-    Task<CollectorJob> AddJobAsync(CollectorJob job, CancellationToken cancellationToken);
-}
-
-public interface IGeoReverseEncodingCacheStore
+public interface IGeoReverseEncodingCacheStoreXX
 {
     Task<GeoReverseEncodingCache> AddAsync(
         GeoReverseEncodingCache cache,

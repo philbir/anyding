@@ -1,10 +1,12 @@
-using Anyding.Discovery;
+using Anyding.Connectors;
 
 namespace Anyding;
 
 public interface IWorkspaceFactory
 {
     string RootDirectory { get; }
+
+    DirectoryInfo GetWorkspaceDirectory(Guid id);
 
     Task<IWorkspace> CreateNewWorkspaceAsync(
         Guid id,

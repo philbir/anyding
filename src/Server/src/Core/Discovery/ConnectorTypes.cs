@@ -1,6 +1,2 @@
-namespace Anyding.Discovery;
+namespace Anyding.Connectors;
 
-public static partial class ConnectorTypes
-{
-    public const string LocalFileSystem = "LFS";
-}

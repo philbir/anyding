@@ -3,7 +3,7 @@ namespace Anyding.Media.Pipelines;
 public class VideoPipeline : WorkspacePipeline<VideoWorkspace>
 {
     public VideoPipeline(
-        IEnumerable<IWorkspaceTask<VideoWorkspace>> tasks) : base(tasks)
+        IServiceProvider provider) : base(provider)
     {
         _taskNames = [
             ExtractVideoDataTask.Info.Name,

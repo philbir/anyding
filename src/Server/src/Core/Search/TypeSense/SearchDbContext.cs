@@ -3,7 +3,18 @@ using Typesense;
 
 namespace Anyding.Search;
 
-public class SearchDbContext(ITypesenseClient typesenseClient, ILoggerFactory loggerFactory) : TypesenseDbContext(typesenseClient, loggerFactory)
+public interface ISearchDbContext
+{
+    ITypesenseCollection<MediaIndex> Media { get; }
+    ITypesenseCollection<FaceIndex> Faces { get; }
+    ITypesenseCollection<PersonIndex> Persons { get; }
+    ITypesenseClient Client { get; }
+    Task EnsureCreatedAsync();
+    Task EnsureDeletedAsync();
+}
+
+public class SearchDbContext(ITypesenseClient typesenseClient, ILoggerFactory loggerFactory)
+    : TypesenseDbContext(typesenseClient, loggerFactory), ISearchDbContext
 {
     public ITypesenseCollection<MediaIndex> Media => GetCollection<MediaIndex>();
 

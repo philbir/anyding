@@ -1,4 +1,4 @@
-using Anyding.Discovery;
+using Anyding.Connectors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,21 +17,8 @@ public static class DiscoveryServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        //Add Connectors
-        services.AddSingleton<FileSystemConnector>();
-
-        services.AddSingleton<IConnectorFactory, DefaultConnectorFactory>();
-        services.AddSingleton<IConnectorManager, DefaultConnectorManager>();
-        services.AddScoped<ItemCollector>();
-
         // File System
-        services.AddOptions<FileStorageOptions>()
-            .Bind(configuration.GetSection("Storage:FileSystem"))
-            .ValidateDataAnnotations();
 
-        services.AddSingleton<IFileSystemStore, FileSystemStore>();
-        services.AddSingleton<IWorkspaceFactory, WorkspaceFactory>();
-        services.AddSingleton<WorkspaceRunner>();
 
         return services;
     }

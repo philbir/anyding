@@ -52,6 +52,18 @@ public class Workspace : IWorkspace
         return Path.Combine(RootDirectory, file.Path);
     }
 
+    internal string GetFileFullPath(WorkspaceFile file)
+    {
+        return GetFileFullPath(file.Name);
+    }
+
+    internal Func<Stream> GetFileLoader(WorkspaceFile file)
+    {
+        var path = GetFileFullPath(file.Name);
+        return () => File.OpenRead(path);
+    }
+
+
     public void UnLock()
     {
         File.Delete(Path.Combine(RootDirectory, _lockFileName));

@@ -1,9 +1,7 @@
 namespace Anyding.Geo;
 
-public class GeoReverseEncodingCache
+public class GeoReverseEncodingCache : Entity<string>
 {
-    public string Id { get; set; }
-
     public DateTime Created { get; set; }
 
     public string Source { get; set; }

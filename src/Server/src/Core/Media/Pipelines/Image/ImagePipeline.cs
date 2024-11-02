@@ -6,7 +6,7 @@ namespace Anyding.Media.Pipelines;
 public class ImagePipeline : WorkspacePipeline<ImageWorkspace>
 {
     public ImagePipeline(
-        IEnumerable<IWorkspaceTask<ImageWorkspace>> tasks) : base(tasks)
+        IServiceProvider provider) : base(provider)
     {
         _taskNames =
         [
@@ -60,6 +60,12 @@ public class ImageWorkspace(Guid id, string directory) : Workspace(id, directory
     public IReadOnlyList<FaceDetectionResult> GetDetectedFaces()
     {
         return LoadFromJson< List<FaceDetectionResult>>(DetectFacesTask.Info.Outputs.DetectedFaces);
+    }
+
+    public WorkspaceFile? GetFaceImage(Guid faceId)
+    {
+        var name = CropFaceImagesTask.Info.GetFaceImageName(faceId);
+        return Info.Files.FirstOrDefault(f => f.Name == name);
     }
 }
 

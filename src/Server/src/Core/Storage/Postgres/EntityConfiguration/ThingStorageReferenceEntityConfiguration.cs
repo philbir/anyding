@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Anyding.Store.EntityConfiguration;
 
-internal class ThingStorageReferenceEntityConfiguration : IEntityTypeConfiguration<ThingStorageReference>
+internal class ThingDataReferenceEntityConfiguration : IEntityTypeConfiguration<ThingDataReference>
 {
-    public void Configure(EntityTypeBuilder<ThingStorageReference> builder)
+    public void Configure(EntityTypeBuilder<ThingDataReference> builder)
     {
         builder.HasKey(p => p.Id);
-        builder.ToTable("thing_storage_reference", SchemaNames.Thing);
+        builder.ToTable("thing_data_ref", SchemaNames.Thing);
     }
 }

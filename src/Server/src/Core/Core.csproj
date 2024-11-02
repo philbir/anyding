@@ -5,7 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="EFCore.NamingConventions" />
+        <PackageReference Include="GreenDonut" />
         <PackageReference Include="Magick.NET-Q16-AnyCPU" />
+        <PackageReference Include="MassTransit.EntityFrameworkCore" />
+        <PackageReference Include="MassTransit.RabbitMQ" />
+        <PackageReference Include="MediatR" />
         <PackageReference Include="MetadataExtractor" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
@@ -23,6 +28,8 @@
         <PackageReference Include="SixLabors.ImageSharp" />
         <PackageReference Include="Xabe.FFmpeg" />
         <PackageReference Include="Xabe.FFmpeg.Downloader" />
+        <PackageReference Include="HotChocolate"/>
+        <PackageReference Include="HotChocolate.Types.Analyzers"/>
     </ItemGroup>
     
     <ItemGroup>

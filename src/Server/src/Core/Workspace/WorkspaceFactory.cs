@@ -1,14 +1,15 @@
-using Anyding.Discovery;
+using Anyding.Connectors;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Anyding;
 
 public class WorkspaceFactory(
-    IFileSystemStore fileSystemStore,
+    IOptions<FileSystemOptions> storageOptions,
     IEnumerable<IWorkspaceProvider> workspaceProviders,
     ILogger<WorkspaceFactory> logger) : IWorkspaceFactory
 {
-    public string RootDirectory => fileSystemStore.Workspace.FullName;
+    public string RootDirectory => Path.Combine(storageOptions.Value.Root, storageOptions.Value.WorkspaceName);
 
     public async Task<IWorkspace> CreateNewWorkspaceAsync(
         Guid id,
@@ -48,7 +49,7 @@ public class WorkspaceFactory(
 
     private IWorkspace GetWorkspaceAsync(WorkspaceInfo info, string root)
     {
-        foreach (var provider in workspaceProviders)
+        foreach (IWorkspaceProvider provider in workspaceProviders)
         {
             if (provider.ManagedItemTypes.Contains(info.Discovery.ItemType))
             {
@@ -101,12 +102,12 @@ public class WorkspaceFactory(
 
     private void EnsureWorkspaceDirectoryExists()
     {
-        if (!Directory.Exists(fileSystemStore.Workspace.FullName))
+        if (!Directory.Exists(RootDirectory))
         {
-            Directory.CreateDirectory(fileSystemStore.Workspace.FullName);
+            Directory.CreateDirectory(RootDirectory);
         }
     }
 
-    private DirectoryInfo GetWorkspaceDirectory(Guid id) =>
-        new(Path.Combine(fileSystemStore.Workspace.FullName, id.ToString("N")));
+    public DirectoryInfo GetWorkspaceDirectory(Guid id) =>
+        new(Path.Combine(RootDirectory, id.ToString("N")));
 }

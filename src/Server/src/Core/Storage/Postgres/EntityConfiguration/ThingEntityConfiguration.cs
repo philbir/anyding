@@ -7,6 +7,7 @@ internal class SchemaNames
 {
     public const string Thing = "thing";
     public const string Job = "job";
+    public const string Configuration = "cfg";
 }
 
 internal class ThingEntityConfiguration : IEntityTypeConfiguration<Thing>

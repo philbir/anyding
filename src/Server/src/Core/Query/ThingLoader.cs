@@ -30,7 +30,7 @@ public record LoadThingOptions
     public static LoadThingOptions Default => new();
 }
 
-public class ThingLoader(IDbContextFactory<AnydingDbContext> contextFactory)
+public class ThingLoader(IAnydingDbContext dbContext)
 {
     public async Task<List<IThing>> LoadAsych(
         IEnumerable<Guid> ids,
@@ -46,8 +46,7 @@ public class ThingLoader(IDbContextFactory<AnydingDbContext> contextFactory)
         LoadThingOptions options,
         CancellationToken ct)
     {
-        AnydingDbContext db = await contextFactory.CreateDbContextAsync(ct);
-        IQueryable<Thing> query = db.Things; //.AsSplitQuery();
+        IQueryable<Thing> query = dbContext.Things; //.AsSplitQuery();
 
         if (options.Types.Any())
         {

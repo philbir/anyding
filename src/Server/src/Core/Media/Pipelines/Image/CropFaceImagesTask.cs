@@ -9,7 +9,8 @@ public class CropFaceImagesTask(IImageCropService imageCropService) : IWorkspace
     {
         await using Stream stream = context.Workspace.LoadWorkingImageStream();
 
-        var faces = context.Workspace.LoadFromJson<IEnumerable<FaceDetectionResult>>(DetectFacesTask.Info.Outputs.DetectedFaces);
+        IEnumerable<FaceDetectionResult> faces = context.Workspace
+            .LoadFromJson<IEnumerable<FaceDetectionResult>>(DetectFacesTask.Info.Outputs.DetectedFaces);
 
         IEnumerable<ImageBoxCropInput> inputs = faces.Select(x => new ImageBoxCropInput
         {
@@ -26,7 +27,7 @@ public class CropFaceImagesTask(IImageCropService imageCropService) : IWorkspace
         foreach (ImageBoxCropResult faceImage in faceImages)
         {
             WorkspaceFile previewFile = context.CreateFile(
-                $"Face_{faceImage.Id}",
+                Info.GetFaceImageName(faceImage.Id),
                 $"face_{faceImage.Id}.{faceImage.Info.Format.ToLower()}");
 
             await context.Workspace.SaveFileAsync(previewFile, faceImage.Image, context.Canceled);
@@ -37,5 +38,7 @@ public class CropFaceImagesTask(IImageCropService imageCropService) : IWorkspace
     internal class Info
     {
         public static string Name => "Image.CropFaceImages";
+
+        internal static string GetFaceImageName(Guid id) => $"Face_{id}";
     }
 }

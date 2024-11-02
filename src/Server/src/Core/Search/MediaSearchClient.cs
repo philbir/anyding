@@ -2,7 +2,7 @@ using TS = Typesense;
 
 namespace Anyding.Search;
 
-public class MediaSearchClient(SearchDbContext searchDb)
+public class MediaSearchClient(ISearchDbContext searchDb)
 {
     public async Task<SearchResult<MediaIndex>> Search<MediaIndex>(SearchRequest request) where MediaIndex : class
     {
@@ -17,7 +17,7 @@ public class MediaSearchClient(SearchDbContext searchDb)
         }
         else
         {
-            searchBuilder.WithQueryBy("name,faces.person_name,geo_names.value,tags.value");
+            searchBuilder.WithQueryBy("name,geo_names.value");
         }
         if (request.FacetBy is { Count: > 0 })
         {

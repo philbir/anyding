@@ -1,13 +1,21 @@
 using System.Diagnostics;
-using Anyding.Discovery;
+using Anyding.Connectors;
+using Anyding.Events;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Anyding;
 
 public abstract class WorkspacePipeline<TWorkspace>(
-    IEnumerable<IWorkspaceTask<TWorkspace>> tasks)
+    IServiceProvider provider)
     : IWorkspacePipeline
     where TWorkspace : IWorkspace
 {
+    readonly IEnumerable<IWorkspaceTask<TWorkspace>> _tasks = provider.GetServices<IWorkspaceTask<TWorkspace>>();
+    readonly ILogger<WorkspacePipeline<TWorkspace>> _logger = provider.GetRequiredService<ILogger<WorkspacePipeline<TWorkspace>>>();
+    readonly IMediator _mediator = provider.GetRequiredService<IMediator>();
+
     protected List<string> _taskNames;
     public abstract string[] ManagedItemTypes { get; }
 
@@ -18,6 +26,7 @@ public abstract class WorkspacePipeline<TWorkspace>(
 
     public virtual async Task RunAsync(IWorkspace workspace, CancellationToken ct)
     {
+        _logger.LogInformation("Running pipeline for workspace {WorkspaceId}", workspace.Id);
         workspace.Lock();
 
         WorkspaceFile? workingFile = workspace.Info.Files.FirstOrDefault(x => x.Name == "Working");
@@ -42,7 +51,7 @@ public abstract class WorkspacePipeline<TWorkspace>(
                 continue;
             }
 
-            var task = tasks.FirstOrDefault(x => x.Name == tasknames);
+            var task = _tasks.FirstOrDefault(x => x.Name == tasknames);
             Exception error = null;
 
             try
@@ -57,11 +66,13 @@ public abstract class WorkspacePipeline<TWorkspace>(
                 };
 
                 WorkspaceTaskResult result = await task.ExecuteAsync(executionContext);
+                await _mediator.Publish(new WorkspacePipelineTaskCompletedEvent(workspace.Id, task.Name), ct);
+
                 workspace.AddPipelineResult(TaskExecutionResult.Completed(task.Name, stopwatch.ElapsedMilliseconds));
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                _logger.LogError(ex, "Task {TaskName} failed to execute", task.Name);
                 workspace.AddPipelineResult(TaskExecutionResult.Failed(task.Name, ex));
                 error = ex;
             }
@@ -73,9 +84,12 @@ public abstract class WorkspacePipeline<TWorkspace>(
 
             if (error != null)
             {
+                await _mediator.Publish(new WorkspacePipelineTaskFailedEvent(workspace.Id, task.Name, error.Message), ct);
                 throw new ApplicationException($"Task failed to execute {task.Name}", error);
             }
         }
+
+        await _mediator.Publish(new WorkspacePipelineCompletedEvent(workspace.Id), ct);
     }
 
     protected abstract Task<TWorkspace> InitializeAsync(Guid id, CancellationToken cancellationToken);

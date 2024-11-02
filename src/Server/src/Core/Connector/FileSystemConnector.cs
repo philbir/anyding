@@ -1,31 +1,27 @@
-using Anyding.Discovery;
+using Anyding.Connectors;
 
 namespace Anyding;
 
 internal class FileSystemConnector : IConnector
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     private string Root { get; set; } = "/";
 
     public ValueTask ConnectAsync(ConnectorDefinition definition, CancellationToken ct)
     {
         Id = definition.Id;
+        Root = definition.Root ?? Root;
 
-        if (definition.Properties.TryGetValue("Root", out var root))
+        if (!Directory.Exists(Root))
         {
-            Root = root;
-        }
-
-        if (!Directory.Exists(root))
-        {
-            throw new InvalidOperationException($"Root directory '{root}' does not exist.");
+            throw new InvalidOperationException($"Root directory '{Root}' does not exist.");
         }
 
         return ValueTask.CompletedTask;
     }
 
-    public async Task<IReadOnlyList<DiscoveredItem>> DiscoverAsync(DiscoveryFilter filter)
+    public async Task<IReadOnlyList<DiscoveredItem>> DiscoverAsync(DiscoveryFilter filter, CancellationToken ct)
     {
         var path = Root;
         string searchPattern = "*";
@@ -72,8 +68,29 @@ internal class FileSystemConnector : IConnector
         return ValueTask.FromResult(stream);
     }
 
-    public async Task UploadAsync(string id, string path, Stream data, CancellationToken ct)
+    public async ValueTask<IReadOnlyList<(byte[] data, string id)>> DownloadBatchAsync(IEnumerable<string> ids, CancellationToken ct)
     {
+        var items = ids.Select(x => new{ Id = x, Path = GetFullPath(x)} ).ToList();
+        var results = new List<(byte[] data, string id)>();
+
+        await Parallel.ForEachAsync(
+            items,
+            new ParallelOptions { MaxDegreeOfParallelism = 10 },
+            async (item, ct) =>
+        {
+            var data = await File.ReadAllBytesAsync(item.Path, ct);
+            lock (results)
+            {
+                results.Add((data, item.Id));
+            }
+        });
+
+        return results;
+    }
+
+    public async Task<UploadResult> UploadAsync(string id, string path, Stream data, CancellationToken ct)
+    {
+        var identifier = Path.Combine(path, id);
         var newFolder = Path.Combine(Root, path);
         CreateDirectoryIfNotExists(newFolder);
 
@@ -81,6 +98,8 @@ internal class FileSystemConnector : IConnector
 
         await using FileStream fileStream = File.Create(newPath);
         await data.CopyToAsync(fileStream, ct);
+
+        return new UploadResult(identifier, fileStream.Length);
     }
 
     public ValueTask DeleteAsync(string id, CancellationToken ct)

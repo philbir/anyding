@@ -11,6 +11,17 @@ public static partial class MediaType
         descriptor.Ignore(x => x.Image);
         descriptor.Ignore(x => x.Tags);
     }
+
+    public static async Task<string> GetPreview(
+        [Parent] MediaIndex media,
+        IPreviewDataByIdDataLoader proviewDataByIdDataLoader,
+        string name,
+        CancellationToken ct)
+    {
+        byte[]? data = await proviewDataByIdDataLoader.WithName(name).LoadAsync(Guid.Parse(media.Id), ct);
+
+        return data.ToDataUrl("webp");
+    }
 }
 
 [ObjectType<FaceIndex>]
@@ -19,5 +30,13 @@ public static partial class FaceType
     static partial void Configure(IObjectTypeDescriptor<FaceIndex> descriptor)
     {
         descriptor.Ignore(x => x.Encoding);
+    }
+}
+
+public static class DataUrlExtensions
+{
+    public static string ToDataUrl(this byte[] image, string type)
+    {
+        return $"data:image/{type};base64,{Convert.ToBase64String(image)}";
     }
 }

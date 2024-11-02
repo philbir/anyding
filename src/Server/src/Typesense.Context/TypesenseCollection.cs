@@ -27,7 +27,7 @@ internal sealed class TypesenseCollection<TDocument> : ITypesenseCollection<TDoc
     public async Task CreateDocuments<TDocument>(IEnumerable<TDocument> documents, int batchSize = 40) where TDocument : class
     {
         _logger.LogInformation("Importing documents to collection {CollectionName}. Count: {Count}", Name, documents.Count());
-        List<ImportResponse> responses = await _client.ImportDocuments(Name, documents, batchSize:batchSize);
+        List<ImportResponse> responses = await _client.ImportDocuments(Name, documents, batchSize:batchSize, ImportType.Upsert);
 
         IEnumerable<ImportResponse> errors = responses.Where(x => !x.Success);
         if (errors.Any())

@@ -1,4 +1,4 @@
-namespace Anyding.Discovery;
+namespace Anyding.Connectors;
 
 public class DiscoveryFilter
 {

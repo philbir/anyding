@@ -1,4 +1,6 @@
 using Anyding;
+using Anyding.Api;
+using Anyding.Connector;
 using Anyding.Query;
 using Anyding.Search;
 
@@ -6,9 +8,17 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddAnydingServer()
     .AddPostgresStore()
+    //.AddMediatR()
+    //.AddMassTransit()
+    .AddThings()
+    .AddConnectors()
+    .AddWorkspaces()
     .AddTypeSense();
 
-builder.Services.AddSingleton<ThingLoader>();
+builder.Services.AddScoped<ThingLoader>();
+builder.Services.AddMemoryCache();
+builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblyContaining<Program>());
+builder.Services.AddAnydingApplication();
 
 builder.Services
     .AddGraphQLServer()
@@ -24,8 +34,16 @@ builder.Services
 
 WebApplication app = builder.Build();
 
-SearchDbContext searchDb = app.Services.GetRequiredService<SearchDbContext>();
+using IServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+ISearchDbContext searchDb = scope.ServiceProvider.GetRequiredService<ISearchDbContext>();
+
 await searchDb.EnsureCreatedAsync();
+
+app.MapGroup("api/things/data").MapThingsDataApi()
+    .WithTags("thingdata");
+
+
+
 
 app.MapGraphQL();
 app.Run();

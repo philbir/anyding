@@ -7,10 +7,14 @@ export default defineConfig({
   server: {
     port: process.env.PORT || 5173,
     proxy: {
+      "/api": {
+        target: "http://localhost:5219/api",
+        changeOrigin: true,
+      },
       "/graphql": {
         target: "http://localhost:5219/graphql",
         changeOrigin: true,
-      },
+      }
     },
   },
   test: {

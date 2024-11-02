@@ -15,22 +15,16 @@ public  static class PostgresStoreServiceCollectionExtensions
             .Bind(builder.Configuration.GetSection("Storage:Postgres"))
             .ValidateDataAnnotations();
 
-        /*
         builder.Services.AddDbContext<AnydingDbContext>((provider, options) =>
         {
             PostgresOptions postgresOptions = provider.GetRequiredService<IOptions<PostgresOptions>>().Value;
-            options.UseNpgsql(postgresOptions.ConnectionString);
-        });*/
-
-        builder.Services.AddDbContextFactory<AnydingDbContext>((provider, options) =>
-        {
-            PostgresOptions postgresOptions = provider.GetRequiredService<IOptions<PostgresOptions>>().Value;
-            options.UseNpgsql(postgresOptions.ConnectionString);
+            options
+                .UseNpgsql(postgresOptions.ConnectionString)
+                .UseSnakeCaseNamingConvention();
         });
 
-        builder.Services.AddScoped<ICollectionJobStore, CollectionJobStore>();
-        builder.Services.AddSingleton<IGeoReverseEncodingCacheStore, GeoReverseEncodingCacheStore>();
-        builder.Services.AddSingleton<ILookupDataStore, LookupDataStore>();
+        builder.Services.AddScoped<IAnydingDbContext, AnydingDbContext>();
+
         return builder;
     }
 }

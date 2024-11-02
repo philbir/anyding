@@ -7,17 +7,11 @@ public interface IFileSystemStore
     DirectoryInfo Workspace { get; }
 }
 
-public class FileSystemStore(IOptions<FileStorageOptions> options) : IFileSystemStore
+public class FileSystemStore(IOptions<FileSystemOptions> options) : IFileSystemStore
 {
-    public DirectoryInfo Workspace => new(Path.Combine(options.Value.Root, options.Value.StagingAreaName));
+    public DirectoryInfo Workspace => new(Path.Combine(options.Value.Root, options.Value.WorkspaceName));
 }
 
-public class FileStorageOptions
-{
-    public string Root { get; set; }
-
-    public string StagingAreaName { get; set; } = "workspace";
-}
 
 
 internal static class FileExtension

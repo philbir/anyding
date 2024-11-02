@@ -1,10 +1,12 @@
-using Anyding.Discovery;
+using Anyding.Connectors;
+using Anyding.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Anyding;
 
 public class DefaultConnectorManager(IServiceProvider serviceProvider) : IConnectorManager
 {
-    public string[] ManagedTypes => [ConnectorTypes.LocalFileSystem];
+    public string[] ManagedTypes => [ConnectorTypes.LocalFileSystem, ConnectorTypes.PostgresDatabase];
 
     public async ValueTask<IConnector> CreateAsync(
         ConnectorDefinition definition,
@@ -17,6 +19,9 @@ public class DefaultConnectorManager(IServiceProvider serviceProvider) : IConnec
             case ConnectorTypes.LocalFileSystem:
                 connector = new FileSystemConnector();
                 break;
+            case ConnectorTypes.PostgresDatabase:
+                connector = new PostgresDatabaseConnector(serviceProvider.GetRequiredService<IAnydingDbContext>());
+                break;
             default:
                 throw new NotSupportedException(
                     $"Not supported Type: {definition.Type}");
@@ -26,4 +31,10 @@ public class DefaultConnectorManager(IServiceProvider serviceProvider) : IConnec
 
         return connector;
     }
+}
+
+public static class ConnectorTypes
+{
+    public const string LocalFileSystem = "LFS";
+    public const string PostgresDatabase = "PGDB";
 }

@@ -1,11 +1,14 @@
 using System.Text.Json;
 using Anyding.Data;
+using Anyding.Geo.Commands;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Anyding.Geo;
 
 public class GeoDecoderService(
-    IGeoReverseEncodingCacheStore store,
+    IMediator mediator,
+    IAnydingDbContext dbContext,
     IEnumerable<IGeoCodingSource> sources,
     ILogger<GeoDecoderService> logger) : IGeoDecoderService
 {
@@ -15,7 +18,7 @@ public class GeoDecoderService(
         CancellationToken ct)
     {
         var key = $"{latitude}_{longitude}";
-        GeoReverseEncodingCache? cache = await store.GetAsync(key, ct);
+        GeoReverseEncodingCache? cache = await dbContext.GeoReverseEncodings.QueryByIdAsync(key, ct);
 
         if (cache != null)
         {
@@ -37,7 +40,8 @@ public class GeoDecoderService(
                     Raw = sourceResult.Raw
                 };
 
-                await store.AddAsync(newCache, ct);
+                var command = new AddGeoReverseEncodingCacheCommand(newCache);
+                await mediator.Send(command, ct);
 
                 return sourceResult.GeoCoding;
             }

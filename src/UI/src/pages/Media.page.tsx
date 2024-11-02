@@ -3,6 +3,9 @@ import { useQuery } from 'urql'
 import { graphql } from '../gql';
 import { Card, Text, SimpleGrid, Container, Loader, TextInput, rem } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
+import classes from './Media.page.module.css';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const searchMediaQueryDocument = graphql(/* GraphQL */ `
 query searchMediaQuery($pageSize: Int!) {
@@ -11,7 +14,7 @@ query searchMediaQuery($pageSize: Int!) {
       pageSize: $pageSize, 
       pageNr: 0, 
       facetBy: ["date_taken.year"]
-      text: "Sedrun" }
+      text: "*" }
   ) {
     totalFound
     totalCount
@@ -29,7 +32,7 @@ query searchMediaQuery($pageSize: Int!) {
           personName
           ageInMonths
         }
-        
+        preview(name:"Preview_Xxxs" )
         altitude
         city
         country
@@ -73,22 +76,23 @@ export function MediaPage() {
       />
 
             </Container>
-            <SimpleGrid cols={6} m={0}>
+            <SimpleGrid cols={10} m={0}>
                 {fetching && <Loader color="blue" />}
                 {error && <div>Error...</div>}
                 {hits?.map((hit: any) => (
-                    <Card key={hit.document.id} shadow="sm" padding="lg" radius="md" withBorder>
-                        <Text fw={500} size="lg" mt="md">
-                            {hit.document.name}
-                        </Text>
+                    <Card key={hit.document.id} shadow="sm" padding="sm" radius="md" withBorder>
                         <Text mt="xs" c="dimmed" size="sm">
-                            {hit.document.city}, {hit.document.country}
+                            {hit.document.city} {hit.document.country}
                         </Text>
+                        <LazyLoadImage
+                            alt={hit.document.name}
+                            placeholderSrc={hit.document.preview}
+                            src={`http://localhost:5219/api/things/data/${hit.document.id}/Preview_SqS`}
+                            effect="blur"></LazyLoadImage>
                     </Card>
                 ))}
             </SimpleGrid>
         </>
-    );
+    )
 }
-
 export default MediaPage;

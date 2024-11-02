@@ -63,29 +63,30 @@ public static class MediaServiceCollectionExtensions
 
     private static IServiceCollection AddImagePipeline(this IServiceCollection services)
     {
-        services.AddSingleton<IWorkspacePipeline, ImagePipeline>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, AutoOrientTask>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, ConvertToJpgTask>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, ExtractImageMetadataTask>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, CreatePreviewImagesTask>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, DetectFacesTask>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, CropFaceImagesTask>();
-        services.AddSingleton<IWorkspaceTask<ImageWorkspace>, ReverseGeoCodeImageTask>();
+        services.AddScoped<IWorkspacePipeline>(p => new ImagePipeline(p));
 
-        services.AddSingleton<IWorkspaceProvider, ImageWorkspaceProvider>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, AutoOrientTask>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, ConvertToJpgTask>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, ExtractImageMetadataTask>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, CreatePreviewImagesTask>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, DetectFacesTask>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, CropFaceImagesTask>();
+        services.AddScoped<IWorkspaceTask<ImageWorkspace>, ReverseGeoCodeImageTask>();
+
+        services.AddScoped<IWorkspaceProvider, ImageWorkspaceProvider>();
 
         return services;
     }
 
     private static IServiceCollection AddVideoPipeline(this IServiceCollection services)
     {
-        services.AddSingleton<IWorkspacePipeline, VideoPipeline>();
-        services.AddSingleton<IWorkspaceTask<VideoWorkspace>, ExtractVideoDataTask>();
-        services.AddSingleton<IWorkspaceTask<VideoWorkspace>, CreateVideoPreviewTask>();
-        services.AddSingleton<IWorkspaceTask<VideoWorkspace>, CreatePreviewImagesFromVideoTask>();
-        services.AddSingleton<IWorkspaceTask<VideoWorkspace>, ReverseGeoCodeVideoTask>();
+        services.AddScoped<IWorkspacePipeline>(p => new VideoPipeline(p));
+        services.AddScoped<IWorkspaceTask<VideoWorkspace>, ExtractVideoDataTask>();
+        services.AddScoped<IWorkspaceTask<VideoWorkspace>, CreateVideoPreviewTask>();
+        services.AddScoped<IWorkspaceTask<VideoWorkspace>, CreatePreviewImagesFromVideoTask>();
+        services.AddScoped<IWorkspaceTask<VideoWorkspace>, ReverseGeoCodeVideoTask>();
 
-        services.AddSingleton<IWorkspaceProvider, VideoWorkspaceProvider>();
+        services.AddScoped<IWorkspaceProvider, VideoWorkspaceProvider>();
         return services;
     }
 }
