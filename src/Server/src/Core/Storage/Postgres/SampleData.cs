@@ -1,10 +1,13 @@
 using Anyding.Connectors;
 using Anyding.Media;
+using SixLabors.ImageSharp.Processing.Processors.Filters;
 
 namespace Anyding;
 
 public static class SampleData
 {
+    public static string RootPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "anyding-data");
+
     public static class Classes
     {
         public static ThingClass ImageClass => new()
@@ -94,6 +97,9 @@ public static class SampleData
 
     public static class ConnectorDefinitions
     {
+
+        private static string GetPath(string name) => Path.Combine(RootPath, name);
+
         public static ConnectorDefinition LocalTest => new()
         {
             Id = "LOCAL_TEST_01",
@@ -109,7 +115,7 @@ public static class SampleData
             Id = "LOCAL_DEMO_02",
             Name = "LocalTest",
             Type = ConnectorTypes.LocalFileSystem,
-            Root = "/Users/p7e/anyding/demo-source-01/",
+            Root = GetPath("demo-source"),
             Priority = 100,
             Properties = new Dictionary<string, string>()
         };
@@ -119,7 +125,7 @@ public static class SampleData
             Id = "LOCAL_DEFAULT",
             Name = "LocalStore",
             Type = ConnectorTypes.LocalFileSystem,
-            Root = "/Users/p7e/anyding/store-default/",
+            Root = GetPath("local-01"),
             Priority = 0,
             Properties = new Dictionary<string, string>()
         };

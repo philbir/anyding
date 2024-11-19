@@ -5,14 +5,14 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
-    port: process.env.PORT || 5173,
+    port: process.env.PORT || 5101,
     proxy: {
       "/api": {
-        target: "http://localhost:5219/api",
+        target: "http://localhost:5001",
         changeOrigin: true,
       },
       "/graphql": {
-        target: "http://localhost:5219/graphql",
+        target: "http://localhost:5001",
         changeOrigin: true,
       }
     },

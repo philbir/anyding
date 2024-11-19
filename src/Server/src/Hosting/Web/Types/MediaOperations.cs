@@ -10,7 +10,7 @@ public static class MediaOperations
         [Service] MediaSearchClient search,
         CancellationToken ct)
     {
-        var result = await search.Search<MediaIndex>(request);
+        SearchResult<MediaIndex> result = await search.Search<MediaIndex>(request, ct);
         return result;
     }
 }

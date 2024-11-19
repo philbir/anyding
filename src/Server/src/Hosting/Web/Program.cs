@@ -29,7 +29,13 @@ builder.Services
     .AddType<DeviceThing>()
     .AddType<AICaptionThingTag>()
     .AddType<AIColorThingTag>()
-    .AddType<AIObjectThingTag>();
+    .AddType<AIObjectThingTag>()
+    .ModifyOptions(o =>
+    {
+        o.EnableDefer = true;
+        o.EnableStream = true;
+    });
+
     //.AddGlobalObjectIdentification();
 
 WebApplication app = builder.Build();
@@ -39,11 +45,9 @@ ISearchDbContext searchDb = scope.ServiceProvider.GetRequiredService<ISearchDbCo
 
 await searchDb.EnsureCreatedAsync();
 
+app.UseMiddleware<AddCacheHeadersMiddleware>();
 app.MapGroup("api/things/data").MapThingsDataApi()
     .WithTags("thingdata");
-
-
-
 
 app.MapGraphQL();
 app.Run();

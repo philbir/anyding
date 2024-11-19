@@ -12,7 +12,7 @@ public static partial class MediaType
         descriptor.Ignore(x => x.Tags);
     }
 
-    public static async Task<string> GetPreview(
+    public static async Task<string> GetPreviewAsync(
         [Parent] MediaIndex media,
         IPreviewDataByIdDataLoader proviewDataByIdDataLoader,
         string name,

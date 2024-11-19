@@ -15,7 +15,11 @@ public class SearchBuilder<TDocument> where TDocument : class
 
     public SearchBuilder<TDocument> WithText(string text)
     {
-        _text = text;
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            _text = text;
+        }
+
         return this;
     }
 

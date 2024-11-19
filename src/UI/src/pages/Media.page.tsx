@@ -1,23 +1,38 @@
+import type React from "react";
+import { useQuery } from "urql";
+import { graphql } from "../gql";
+import {
+	Card,
+	Text,
+	Modal,
+	Container,
+	Loader,
+	TextInput,
+	rem,
+} from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
+import { IconSearch } from "@tabler/icons-react";
+import { Routes, Route, BrowserRouter, Outlet } from "react-router-dom";
+import classes from "./Media.page.module.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-import { useQuery } from 'urql'
-import { graphql } from '../gql';
-import { Card, Text, SimpleGrid, Container, Loader, TextInput, rem } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
-import classes from './Media.page.module.css';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import { useState } from "react";
+import MediaDetailsPage from "./MediaDetails.page";
 
 const searchMediaQueryDocument = graphql(/* GraphQL */ `
-query searchMediaQuery($pageSize: Int!) {
+query searchMediaQuery($pageSize: Int!, $searchText: String!) {
   searchMedia(
     request: { 
       pageSize: $pageSize, 
       pageNr: 0, 
-      facetBy: ["date_taken.year"]
-      text: "*" }
+      facetBy: ["date_taken.year"],
+      text: $searchText }
   ) {
     totalFound
     totalCount
+    searchDuration
     hits {
       vectorDistance,
       geoDistance{
@@ -32,7 +47,7 @@ query searchMediaQuery($pageSize: Int!) {
           personName
           ageInMonths
         }
-        preview(name:"Preview_Xxxs" )
+        preview(name:"Preview_Xxs" )
         altitude
         city
         country
@@ -60,39 +75,59 @@ query searchMediaQuery($pageSize: Int!) {
 }
 `);
 
-export function MediaPage() {
+const MediaPage: React.FC = () => {
+	const [searchText, setSearchText] = useState("");
+	const [debounced] = useDebouncedValue(searchText, 500);
+	const [result] = useQuery({
+		query: searchMediaQueryDocument,
+		variables: { pageSize: 100, searchText: debounced },
+	});
+	const { data, fetching, error } = result;
+	const hits = data?.searchMedia?.hits;
+	const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
+	const navigate = useNavigate(); // Initialize useNavigate
+	const [opened, setOpened] = useState(false);
 
-    const [result] = useQuery({ query: searchMediaQueryDocument, variables: { pageSize: 100 } })
-    const { data, fetching, error } = result
-    const hits = data?.searchMedia?.hits;
-    const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
-    return (
-        <>
-            <Container h={80} m={0}>
-            <TextInput w={500}
-        leftSectionPointerEvents="none"
-        leftSection={icon}
-        placeholder="Search..."
-      />
+	const handleImageClick = (id: string) => {
+		navigate(`/media/${id}`);
+	};
 
-            </Container>
-            <SimpleGrid cols={10} m={0}>
-                {fetching && <Loader color="blue" />}
-                {error && <div>Error...</div>}
-                {hits?.map((hit: any) => (
-                    <Card key={hit.document.id} shadow="sm" padding="sm" radius="md" withBorder>
-                        <Text mt="xs" c="dimmed" size="sm">
-                            {hit.document.city} {hit.document.country}
-                        </Text>
-                        <LazyLoadImage
-                            alt={hit.document.name}
-                            placeholderSrc={hit.document.preview}
-                            src={`http://localhost:5219/api/things/data/${hit.document.id}/Preview_SqS`}
-                            effect="blur"></LazyLoadImage>
-                    </Card>
-                ))}
-            </SimpleGrid>
-        </>
-    )
-}
+	return (
+		<>
+			<Outlet />
+
+			<Container h={80} m={0}>
+				<TextInput
+					leftSectionPointerEvents="none"
+					leftSection={fetching ? <Loader size="xs" /> : icon}
+					placeholder="Search..."
+					value={searchText}
+					onChange={(event) => setSearchText(event.currentTarget.value)}
+				/>
+			</Container>
+			<Container fluid>
+				{error && <div>Error...</div>}
+				<div className={classes.imageList}>
+					{hits?.map((hit: any) => (
+						<LazyLoadImage
+							key={hit.document.id}
+							alt={hit.document.name}
+							placeholderSrc={hit.document.preview}
+							src={`/api/things/data/${hit.document.id}/Preview_SqS`}
+							effect="blur"
+							className={classes.imageItem}
+							onClick={() => handleImageClick(hit.document.id)} // Add onClick handler
+						/>
+					))}
+				</div>
+			</Container>
+			<Container>
+				<Text size="sm" align="center">
+					Search duration: {data?.searchMedia?.searchDuration} ms
+				</Text>
+			</Container>
+		</>
+	);
+};
+
 export default MediaPage;

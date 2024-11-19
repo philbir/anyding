@@ -19,6 +19,7 @@ public class MediaSearchClient(ISearchDbContext searchDb)
         {
             searchBuilder.WithQueryBy("name,geo_names.value");
         }
+
         if (request.FacetBy is { Count: > 0 })
         {
             searchBuilder.WithFacetBy(request.FacetBy.ToArray());
@@ -49,6 +50,7 @@ public class MediaSearchClient(ISearchDbContext searchDb)
             PageNr = result.Page,
             TotalCount = result.OutOf,
             TotalFound = result.Found,
+            SearchDuration = result.SearchTimeMs,
             Hits = result.Hits.Select(x => new SearchHit<MediaIndex>
             {
                 Document = x.Document,
@@ -104,11 +106,12 @@ public class GeoSearchRadius
 
 public class SearchResult<MediaIndex>
 {
-    public List<SearchHit<MediaIndex>> Hits { get; set; }
+    public List<SearchHit<MediaIndex>> Hits { get; set; } = [];
     public int PageNr { get; set; }
     public int TotalCount { get; set; }
     public int? TotalFound { get; set; }
-    public List<FacetResult> Facets { get; set; }
+    public List<FacetResult> Facets { get; set; } = [];
+    public int SearchDuration { get; set; }
 }
 
 public class SearchHit<TDocument>
